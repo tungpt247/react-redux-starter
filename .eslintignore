@@ -1,0 +1,3 @@
+ "linter-eslint":
+    disableEslintIgnore: true
+    useGlobalEslint: true
