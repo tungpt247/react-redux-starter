@@ -1,6 +1,6 @@
 {
   "name": "react-redux-starter",
-  "version": "1.0.0",
+  "version": "1.0.14",
   "description": "Starter kit for React and Redux",
   "scripts": {
     "prestart": "babel-node tools/prestart.js",
@@ -13,15 +13,18 @@
     "clean-dist": "npm run remove-dist && mkdir dist",
     "remove-dist": "node_modules/.bin/rimraf ./dist",
     "build:html": "babel-node tools/buildHtml.js",
-    "prebuild": "npm-run-all clean-dist test lint build:html",
+    "prebuild": "npm-run-all clean-dist test lint",
     "build": "babel-node tools/build.js",
-    "postbuild": "babel-node tools/distServer.js"
+    "postbuild": "babel-node tools/distServer.js",
+    "release": "sh ./scripts/release",
+    "publish": "sh ./scripts/publish"
   },
   "author": "Tung Phan",
   "license": "MIT",
   "dependencies": {
     "babel-polyfill": "^6.9.1",
     "jquery": "^3.0.0",
+    "method-override": "^2.3.6",
     "normalize.css": "^4.1.1",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
@@ -56,6 +59,8 @@
     "clean-webpack-plugin": "^0.1.9",
     "colors": "^1.1.2",
     "compression": "^1.6.2",
+    "conventional-changelog-cli": "^1.2.0",
+    "conventional-recommended-bump": "^0.2.1",
     "cross-env": "^1.0.8",
     "css-loader": "^0.23.1",
     "enzyme": "^2.3.0",
@@ -71,6 +76,7 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "html-loader": "^0.4.3",
+    "html-minifier": "^2.1.6",
     "html-webpack-plugin": "^2.21.0",
     "html-webpack-template": "^5.0.0",
     "jquery": "^3.0.0",
