@@ -46,7 +46,7 @@ export default {
     ]
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    new webpack.HotModuleReplacementPlugin({multiStep: true}),
     new webpack.NoErrorsPlugin(),
     new ExtractTextPlugin('[name].[chunkhash].css'),
     new HtmlwebpackPlugin({

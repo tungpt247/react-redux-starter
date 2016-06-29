@@ -48,7 +48,13 @@ export default {
       template: 'node_modules/html-webpack-template/index.ejs',
       title: 'React-Redux Kit',
       appMountId: 'app',
-      inject: false
+      inject: false,
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true}
     }),
     new ExtractTextPlugin('[name].[chunkhash].css'),
     new webpack.DefinePlugin(GLOBALS),
