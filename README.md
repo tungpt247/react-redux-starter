@@ -1,18 +1,31 @@
-Getting started
+#Getting started
+
 A minimal Starter Kit for React - Redux template
 
-What's included:
+###What's included:
 
 Tasks scripts using npm run
-Babel compiler ES6 to ES5
-ES6 lint, babel-lint
 
-Installation
-npm install
+- Babel compiler ES6 to ES5
 
-Scripts
-npm run buid - products production version
+- ES6 lint, babel-lint
 
-npm run start - development version and runs a watcher
+##Installation
 
-npm run test - it runs the tests
+
+Install dependencies packages
+
+	npm install
+
+Development version and runs a watcher
+
+	npm run start
+	
+Runs the tests
+
+	npm run test
+	
+Products production version
+
+	npm run buid
+	
