@@ -1,6 +1,13 @@
-import webpack from 'webpack'
-import path from 'path'
+import webpack           from 'webpack'
+import path              from 'path'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import HtmlwebpackPlugin from 'html-webpack-plugin'
+import autoprefixer      from 'autoprefixer'
+import postcssImport     from 'postcss-import'
+import loaders from './webpack.loaders'
 
+const bourbonPath = require('bourbon').includePaths
+const neatPath = require('bourbon-neat').includePaths
 export default {
   debug: true,
   devtool: 'cheap-module-eval-source-map',
@@ -8,13 +15,14 @@ export default {
   entry: [
     'eventsource-polyfill', // necessary for hot reloading with IE
     'webpack-hot-middleware/client?reload=true', //note that it reloads the page if hot module reloading fails.
-    './src/index'
+    './src/index',
+    './stylesheets/main.scss'
   ],
   target: 'web',
   output: {
     path: __dirname + '/dist', // Note: Physical files are only output by the production build task `npm run build`.
     publicPath: '/',
-    filename: 'bundle.js'
+    filename: '[name].js'
   },
   devServer: {
     contentBase: './src'
@@ -24,37 +32,28 @@ export default {
     extensions: ['', '.js', '.jsx'],
     modulesDirectories: ['node_modules', 'test']
   },
+  module: {
+    loaders: loaders
+  },
+  // sass-loader bourbon, neat path
+  sassLoader: {
+    includePaths: bourbonPath.concat(neatPath)
+  },
+  postcss: function(webpack) {
+    return [
+      autoprefixer,
+      postcssImport({addDependencyTo: webpack})
+    ]
+  },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    new ExtractTextPlugin('[name].[chunkhash].css'),
+    new HtmlwebpackPlugin({
+      template: 'node_modules/html-webpack-template/index.ejs',
+      title: 'React-Redux Kit',
+      appMountId: 'app',
+      inject: false
+    })
   ],
-  module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        include: path.join(__dirname, 'src'),
-        loaders: ['babel']
-      },
-      {
-        test: /(\.css)$/,
-        loaders: ['style', 'css']
-      },
-      {
-        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'file'
-      },
-      {
-        test: /\.(woff|woff2)$/,
-        loader: 'url?prefix=font/&limit=5000'
-      },
-      {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&mimetype=application/octet-stream'
-      },
-      {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&mimetype=image/svg+xml'
-      }
-    ]
-  }
 }

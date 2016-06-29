@@ -1,8 +1,14 @@
-import webpack from 'webpack'
-import path from 'path'
+import path              from 'path'
+import webpack           from 'webpack'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
-const CleanPlugin = require('clean-webpack-plugin')
+import CleanPlugin       from 'clean-webpack-plugin'
+import HtmlwebpackPlugin from 'html-webpack-plugin'
+import autoprefixer      from 'autoprefixer'
+import postcssImport     from 'postcss-import'
+import loaders           from './webpack.loaders'
 
+const bourbonPath = require('bourbon').includePaths
+const neatPath = require('bourbon-neat').includePaths
 const GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify('production')
 }
@@ -11,20 +17,42 @@ export default {
   debug: false,
   devtool: 'cheap-module-source-map',
   noInfo: true,
-  entry: './src/index',
+  entry: [
+    './src/index',
+    './stylesheets/main.scss'
+  ],
   target: 'web',
   output: {
     path: __dirname + '/dist', // Note: Physical files are only output by the production build task `npm run build`.
     publicPath: '/',
-    filename: 'bundle.js'
+    filename: '[name].js'
   },
   devServer: {
     contentBase: './dist'
   },
+  module: {
+    loaders: loaders
+  },
+  // sass-loader bourbon, neat path
+  sassLoader: {
+    includePaths: bourbonPath.concat(neatPath)
+  },
+  postcss: function(webpack) {
+    return [
+      autoprefixer,
+      postcssImport({addDependencyTo: webpack})
+    ]
+  },
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
+    new HtmlwebpackPlugin({
+      template: 'node_modules/html-webpack-template/index.ejs',
+      title: 'React-Redux Kit',
+      appMountId: 'app',
+      inject: false
+    }),
+    new ExtractTextPlugin('[name].[chunkhash].css'),
     new webpack.DefinePlugin(GLOBALS),
-    new ExtractTextPlugin('styles.css'),
+    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       minimize: true,
@@ -36,34 +64,5 @@ export default {
         comments: false
       }
     })
-  ],
-  module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        include: path.join(__dirname, 'src'),
-        loaders: ['babel']
-      },
-      {
-        test: /(\.css)$/,
-        loader: ExtractTextPlugin.extract('css?sourceMap')
-      },
-      {
-        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'file'
-      },
-      {
-        test: /\.(woff|woff2)$/,
-        loader: 'url?prefix=font/&limit=5000'
-      },
-      {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&mimetype=application/octet-stream'
-      },
-      {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&mimetype=image/svg+xml'
-      }
-    ]
-  }
+  ]
 }

@@ -1,0 +1,9 @@
+@import "~normalize.css/normalize";
+
+$yellow: #ff0;
+$red: #f00;
+
+body {
+  background-color: $yellow;
+  display: flex;
+}
