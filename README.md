@@ -12,20 +12,26 @@ Tasks scripts using npm run
 
 ##Installation
 
-
 Install dependencies packages
 
+```
 	npm install
+```
 
 Development version and runs a watcher
 
+```
 	npm run start
-	
+```
+
 Runs the tests
 
+```
 	npm run test
-	
+```
+
 Products production version
 
+```
 	npm run buid
-	
+```
