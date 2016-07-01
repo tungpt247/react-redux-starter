@@ -8,8 +8,10 @@
     "open:src": "babel-node tools/server.js",
     "lint": "node_modules/.bin/esw webpack.config.* src tools",
     "lint:watch": "npm run lint -- --watch",
-    "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js 'src/**/*.test.js'",
+    "test": "./node_modules/.bin/babel-node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha 'src/**/*.test.js'",
     "test:watch": "npm run test -- --watch",
+    "coverage": "node_modules/nyc/bin/nyc.js npm run test",
+    "check-coverage": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
     "clean-dist": "npm run remove-dist && mkdir dist",
     "remove-dist": "node_modules/.bin/rimraf ./dist",
     "build:html": "babel-node tools/buildHtml.js",
@@ -41,6 +43,7 @@
     "babel-core": "^6.9.1",
     "babel-eslint": "^6.0.4",
     "babel-loader": "^6.2.4",
+    "babel-plugin-__coverage__": "^11.0.0",
     "babel-plugin-react-display-name": "^2.0.0",
     "babel-plugin-react-transform": "^2.0.2",
     "babel-plugin-transform-es2015-arrow-functions": "^6.8.0",
@@ -58,6 +61,7 @@
     "clean-webpack-plugin": "^0.1.9",
     "colors": "^1.1.2",
     "compression": "^1.6.2",
+    "coveralls": "^2.11.9",
     "cross-env": "^1.0.8",
     "css-loader": "^0.23.1",
     "enzyme": "^2.3.0",
@@ -75,12 +79,15 @@
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.21.0",
     "html-webpack-template": "^5.0.0",
+    "isparta": "^4.0.0",
+    "istanbul": "^1.0.0-alpha",
     "jquery": "^3.0.0",
     "jsdom": "^9.2.1",
     "mocha": "^2.5.3",
     "nock": "^8.0.0",
     "node-sass": "^3.8.0",
     "npm-run-all": "^2.1.2",
+    "nyc": "^6.6.1",
     "open": "0.0.5",
     "postcss-import": "^8.1.2",
     "postcss-loader": "^0.9.1",
@@ -99,5 +106,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/tungpt247/react-redux-starter"
+  },
+   "nyc": {
+    "sourceMap": false,
+    "instrument": false
   }
 }
